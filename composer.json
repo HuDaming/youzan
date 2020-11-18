@@ -1,0 +1,22 @@
+{
+    "name": "hudm\/youzan",
+    "description": "laravel youzan sdk for customer service system",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Apple情绪化",
+            "email": "40834106@qq.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Hudm\\Youzan\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Hudm\\Youzan\\Tests\\": "tests"
+        }
+    }
+}
