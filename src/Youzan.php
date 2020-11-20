@@ -20,16 +20,27 @@ class Youzan
     protected $secret;
 
     /**
+     * 授权店铺ID
+     *
+     * @var int
+     */
+    protected $storeId;
+
+    /**
      * @var string
      */
     protected $accessToken;
 
-    public static $cacheKey;
+    /**
+     * @var string
+     */
+    public static $cacheKey = 'youzan-access-token';
 
     public function __construct(array $config = [])
     {
         $this->id = $config['client_id'];
         $this->secret = $config['client_secret'];
+        $this->storeId = $config['store_id'];
     }
 
     /**
@@ -40,7 +51,7 @@ class Youzan
     public function getAccessToken()
     {
         $this->accessToken = Cache::remember(self::$cacheKey, 10080, function () {
-            $res = (new Token($this->id, $this->secret))->getSelfAppToken('91147199');
+            $res = (new Token($this->id, $this->secret))->getSelfAppToken($this->storeId);
             return $res['access_token'];
         });
 
