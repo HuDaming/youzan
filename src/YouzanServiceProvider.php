@@ -14,10 +14,8 @@ class YouzanServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(Youzan::class, function ($app) {
-            return new Youzan();
+            return new Youzan(config('youzan'));
         });
-
-        $this->app->alias();
     }
 
     public function provides()
@@ -32,6 +30,8 @@ class YouzanServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->publishes([
+            __DIR__.'/config/youzan.php' => config_path('youzan.php')
+        ]);
     }
 }
