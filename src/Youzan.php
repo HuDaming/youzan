@@ -59,6 +59,32 @@ class Youzan
     }
 
     /**
+     * 获取店铺客户列表
+     *
+     * @param int $page
+     * @param int $pageSize
+     * @param int|null $createdAtStart
+     * @return mixed
+     */
+    public function getUsers(int $createdAtStart = null, int $page = 1, int $pageSize = 50)
+    {
+        $this->getAccessToken();
+        $client = new Client($this->accessToken);
+
+        $method = 'youzan.scrm.customer.search';
+        $apiVersion = '3.1.2';
+
+        $params = [
+            "page" => $page,
+            "page_size" => $pageSize
+        ];
+
+        if (!is_null($createdAtStart)) $params["created_at_start"] = $createdAtStart;
+
+        return $client->post($method, $apiVersion, $params);
+    }
+
+    /**
      * 获取未结束活动列表
      *
      * @return mixed
