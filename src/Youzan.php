@@ -85,6 +85,63 @@ class Youzan
     }
 
     /**
+     * 获取用户有赞openid
+     *
+     * @param int $userId
+     * @return mixed
+     */
+    public function getUserOpenid(int $userId)
+    {
+        $this->getAccessToken();
+        $client = new Client($this->accessToken);
+
+        $method = 'youzan.user.openid.get';
+        $apiVersion = '1.0.0';
+
+        $params = ['user_id' => $userId];
+
+        return $client->post($method, $apiVersion, $params);
+    }
+
+    /**
+     * 获取用户的微信 openid 和 unionid
+     *
+     * @param string $yzOpenid
+     * @return mixed
+     */
+    public function getWeixinOpenid(string $yzOpenid)
+    {
+        $this->getAccessToken();
+        $client = new Client($this->accessToken);
+
+        $method = 'youzan.user.weixin.openid.get';
+        $apiVersion = '3.0.0';
+
+        $params = ['yz_open_id' => $yzOpenid];
+
+        return $client->post($method, $apiVersion, $params);
+    }
+
+    /**
+     * 获取用户基本信息
+     *
+     * @param string $yzOpenid
+     * @return mixed
+     */
+    public function getUserInfo(string $yzOpenid)
+    {
+        $this->getAccessToken();
+        $client = new Client($this->accessToken);
+
+        $method = 'youzan.user.weixin.openid.get';
+        $apiVersion = '3.0.0';
+
+        $params = ['yz_open_id' => $yzOpenid];
+
+        return $client->post($method, $apiVersion, $params);
+    }
+
+    /**
      * 获取未结束活动列表
      *
      * @return mixed
