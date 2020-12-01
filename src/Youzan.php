@@ -114,10 +114,13 @@ class Youzan
         $this->getAccessToken();
         $client = new Client($this->accessToken);
 
-        $method = 'youzan.user.weixin.openid.get';
-        $apiVersion = '3.0.0';
+        $method = 'youzan.scrm.customer.detail.get';
+        $apiVersion = '1.0.1';
 
-        $params = ['yz_open_id' => $yzOpenid];
+        $params = [
+            'yz_open_id' => $yzOpenid,
+            'fields' => "wx_avatar,show_name,gender,county_name,total_trade_amount,name,trade_count,province_name,city_name,wei_xin",
+        ];
 
         return $client->post($method, $apiVersion, $params);
     }
