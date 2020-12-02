@@ -29,6 +29,11 @@ class Youzan
     /**
      * @var string
      */
+    protected $appSource;
+
+    /**
+     * @var string
+     */
     protected $accessToken;
 
     /**
@@ -41,6 +46,7 @@ class Youzan
         $this->id = $config['client_id'];
         $this->secret = $config['client_secret'];
         $this->storeId = $config['store_id'];
+        $this->appSource = $config['app_source'];
     }
 
     /**
@@ -181,7 +187,7 @@ class Youzan
         $apiVersion = '3.0.0';
 
         $params = [
-            'app_source' => 'COMMUNITY',
+            'app_source' => $this->appSource,
             'activity_id' => $activityId,
             'page_num' => $page,
             'page_size' => $pageSize
