@@ -191,6 +191,25 @@ class Youzan
     }
 
     /**
+     * 核销码获取优惠码
+     *
+     * @param string $codeValue
+     * @return mixed
+     */
+    public function getCouponCodeConsume(string $codeValue)
+    {
+        $this->getAccessToken();
+        $client = new Client($this->accessToken);
+
+        $method = 'youzan.ump.coupon.consume.get';
+        $apiVersion = '3.0.0';
+
+        $params = ['code' => $codeValue];
+
+        return $client->post($method, $apiVersion, $params);
+    }
+
+    /**
      * 按照创建时间获取订单
      *
      * @param string|null $startAt
