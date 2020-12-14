@@ -151,6 +151,25 @@ class Youzan
     }
 
     /**
+     * 获取用户简要信息
+     *
+     * @param string $userId
+     * @return mixed
+     */
+    public function getUserBasic(string $userId)
+    {
+        $this->getAccessToken();
+        $client = new Client($this->accessToken);
+
+        $method = 'youzan.user.basic.get';
+        $apiVersion = '3.0.1';
+
+        $params = ['yz_open_id' => $userId];
+
+        return $client->post($method, $apiVersion, $params);
+    }
+
+    /**
      * 获取未结束活动列表
      *
      * @return mixed
@@ -197,6 +216,34 @@ class Youzan
     }
 
     /**
+     * 获取优惠码领取日志
+     *
+     * @param string $groupId
+     * @param string|null $startAt
+     * @param int $page
+     * @return mixed
+     */
+    public function getCouponCodeLogs(string $groupId, string $startAt = null, int $page = 1)
+    {
+        $this->getAccessToken();
+        $client = new Client($this->accessToken);
+
+        $method = 'youzan.ump.coupon.consume.fetchlogs.get';
+        $apiVersion = '3.0.1';
+
+        // 设置参数
+        $params = [
+            "page_no" => $page,
+            "coupon_group_id" => $groupId,
+            "page_size" => 50
+        ];
+
+        if (!is_null($startAt)) $params['start_taked'] = $startAt;
+
+        return $client->post($method, $apiVersion, $params);
+    }
+
+    /**
      * 核销码获取优惠码
      *
      * @param string $codeValue
@@ -235,6 +282,82 @@ class Youzan
         $params = [
             'start_created' => $startAt,
             'end_created' => $endAt
+        ];
+
+        return $client->post($method, $apiVersion, $params);
+    }
+
+    /* =====================================
+     * =========== 销售管理相关 ==============
+     ==================================== */
+
+    /**
+     * 获取销售分组列表
+     *
+     * @param int $page
+     * @param int $pageSize
+     * @return mixed
+     */
+    public function getSalesmanGroupList(int $page = 1, int $pageSize = 20)
+    {
+        $this->getAccessToken();
+        $client = new Client($this->accessToken);
+
+        $method = 'youzan.salesman.groups.get';
+        $apiVersion = '3.0.0';
+
+        $params = [
+            'page_no' => $page,
+            'page_size' => $pageSize
+        ];
+
+        return $client->post($method, $apiVersion, $params);
+    }
+
+    /**
+     * 获取销售列表
+     *
+     * @param int $page
+     * @param int $pageSize
+     * @return mixed
+     */
+    public function getSalesmanList(int $page = 1, int $pageSize = 20)
+    {
+        $this->getAccessToken();
+        $client = new Client($this->accessToken);
+
+        $method = 'youzan.salesman.accounts.get';
+        $apiVersion = '3.0.0';
+
+        $params = [
+            'page_no' => $page,
+            'page_size' => $pageSize
+        ];
+
+        return $client->post($method, $apiVersion, $params);
+    }
+
+    /**
+     * 获取销售和客户的绑定关系列表
+     *
+     * @param string $mobile
+     * @param int $page
+     * @param int $pageSize
+     * @return mixed
+     */
+    public function getSalesmanCustomerList(string $mobile, int $page = 1, int $pageSize = 20)
+    {
+        $this->getAccessToken();
+        $client = new Client($this->accessToken);
+
+        $method = 'youzan.salesman.customers.get';
+        $apiVersion = '3.0.1';
+
+        $params = [
+            'type' => 0,
+            'mobile' => $mobile,
+            'page_no' => $page,
+            'page_size' => $pageSize
         ];
 
         return $client->post($method, $apiVersion, $params);
