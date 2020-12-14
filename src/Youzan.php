@@ -169,6 +169,10 @@ class Youzan
         return $client->post($method, $apiVersion, $params);
     }
 
+    /* =====================================
+     * =========== 优惠券/码相关 =============
+     ==================================== */
+
     /**
      * 获取未结束活动列表
      *
@@ -211,6 +215,25 @@ class Youzan
             'page_num' => $page,
             'page_size' => $pageSize
         ];
+
+        return $client->post($method, $apiVersion, $params);
+    }
+
+    /**
+     * 获取优惠码详情
+     *
+     * @param string $id
+     * @return mixed
+     */
+    public function getCouponCodeDetail(string $id)
+    {
+        $this->getAccessToken();
+        $client = new Client($this->accessToken);
+
+        $method = 'youzan.ump.promocode.detail.get';
+        $apiVersion = '3.0.1';
+
+        $params = ['id' => $id];
 
         return $client->post($method, $apiVersion, $params);
     }
