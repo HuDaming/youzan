@@ -129,7 +129,7 @@ class Youzan
     }
 
     /**
-     * 获取用户基本信息
+     * 获取客户详情
      *
      * @param string $yzOpenid
      * @return mixed
@@ -144,7 +144,7 @@ class Youzan
 
         $params = [
             'yz_open_id' => $yzOpenid,
-            'fields' => "wx_avatar,show_name,gender,county_name,total_trade_amount,name,trade_count,province_name,city_name,wei_xin",
+            "fields" => "user_base,behavior,prepaid",
         ];
 
         return $client->post($method, $apiVersion, $params);
