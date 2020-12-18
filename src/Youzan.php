@@ -385,4 +385,87 @@ class Youzan
 
         return $client->post($method, $apiVersion, $params);
     }
+
+    /* =====================================
+     * ============== 标签相关 ==============
+     ==================================== */
+
+    /**
+     * 获取标签列表
+     *
+     * @param string $keyword
+     * @param int $page
+     * @param int $pageSize
+     * @return mixed
+     */
+    public function getTags(string $keyword = null, int $page = 1, int $pageSize = 50)
+    {
+        $params = [
+            'page_no' => $page,
+            'page_size' => $pageSize
+        ];
+
+        if (!is_null($keyword)) $params['tag_name_keyword'] = $keyword;
+
+        return $this->yzResponse(
+            'youzan.scrm.tag.search.template',
+            '1.0.0',
+            $params);
+    }
+
+    /**
+     * 给用户打标
+     *
+     * @param string $accountType 帐号类型。
+     * 目前支持以下选项（只支持传一种）：
+     * FansID：自有粉丝ID，
+     * Mobile：手机号，
+     * YouZanAccount：有赞账号，
+     * OpenUserId：三方自身账号，
+     * WeiXinOpenId：微信openId，
+     * YzOpenId：有赞OpenId
+     * @param string $accountId
+     * @param string $tags 签名字符串，多个签名使用英文逗号","分开
+     * @return boolean|mixed
+     */
+    public function setCustomerTags(string $accountType = 'YzOpenId', string $accountId, string $tags)
+    {
+        // 如果标签为空直接终止
+        if (empty($tags)) return false;
+
+        // 字符串格式的标签转为数组格式
+        $tagArr = explode(',', $tags);
+        $arr = [];
+        foreach ($tagArr as $tag) {
+            $arr[] = ['tag_name' => $tag];
+        }
+
+        $params = [
+            'account_type' => 'YzOpenId',
+            'account_id' => 'qNiMHPtf642667478442356736',
+            'tags' => $arr
+        ];
+
+        return $this->yzResponse(
+            'youzan.scrm.tag.relation.add',
+            '4.0.0',
+            $params
+        );
+    }
+
+    /**
+     * 请求有赞平台
+     *
+     * @param string $method
+     * @param string $apiVersion
+     * @param array $params
+     * @return mixed
+     */
+    protected function yzResponse(string $method, string $apiVersion, array $params = [])
+    {
+        $this->getAccessToken();
+        $client = new Client($this->accessToken);
+
+        return $client->post($method, $apiVersion, $params);
+    }
 }
